@@ -1,0 +1,28 @@
+name: Draft plugin release
+on:
+  push:
+    tags:
+      - '[0-9]*'
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - run: npm run build
+      - name: Verify tag and manifest version
+        run: |
+          version=$(node -p "require('./manifest.json').version")
+          test "$GITHUB_REF_NAME" = "$version"
+      - name: Draft release with Obsidian assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          assets=(manifest.json main.js)
+          if [ -f styles.css ]; then assets+=(styles.css); fi
+          gh release create "$GITHUB_REF_NAME" --draft --title "$GITHUB_REF_NAME" "${assets[@]}"
