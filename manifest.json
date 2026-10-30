@@ -1,0 +1,9 @@
+{
+  "id": "variable-page-width",
+  "name": "Variable Page Width",
+  "version": "1.0.0",
+  "minAppVersion": "1.4.0",
+  "description": "Drag note edges to set per-note page width, single-sided margins, and indents.",
+  "author": "dylanchid",
+  "isDesktopOnly": false
+}

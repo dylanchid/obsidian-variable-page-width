@@ -1,0 +1,91 @@
+/* Variable Page Width — per-note width, single-sided margins, and indents */
+
+.vpw-enabled .markdown-source-view.mod-cm6 .cm-sizer,
+.vpw-enabled .markdown-preview-view .markdown-preview-sizer {
+  box-sizing: border-box;
+  max-width: var(--vpw-width) !important;
+  width: 100%;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  position: relative;
+  left: var(--vpw-offset, 0px);
+}
+
+/* Keep live-preview / reading properties and embeds aligned with the column. */
+.vpw-enabled .markdown-source-view.mod-cm6.is-live-preview .cm-content,
+.vpw-enabled .markdown-preview-view .markdown-preview-sizer > div {
+  max-width: 100%;
+}
+
+.vpw-handles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+  overflow: hidden;
+}
+
+.vpw-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 14px;
+  pointer-events: auto;
+  cursor: ew-resize;
+  touch-action: none;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.vpw-handle::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 6px;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--interactive-accent);
+  opacity: 0;
+  transition: opacity 80ms ease;
+}
+
+.vpw-handle:hover::before,
+.vpw-handle[data-mode]::before {
+  opacity: 0.7;
+}
+
+.vpw-handle[data-mode="indent"]::before {
+  background: var(--color-green, var(--interactive-accent));
+}
+
+.vpw-tooltip {
+  position: absolute;
+  z-index: 2;
+  max-width: min(300px, calc(100% - 24px));
+  padding: 5px 8px;
+  color: var(--text-normal);
+  background: var(--background-primary-alt);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s, 4px);
+  box-shadow: var(--shadow-s);
+  font-size: var(--font-ui-smaller);
+  line-height: 1.25;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-50%) translateY(-3px);
+  transition: opacity 80ms ease, transform 80ms ease;
+}
+
+.vpw-tooltip.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Soften default file side padding so the handles define the page edge. */
+.vpw-enabled .markdown-source-view.mod-cm6 .cm-scroller,
+.vpw-enabled .markdown-preview-view {
+  --file-margins: 8px 16px;
+}
